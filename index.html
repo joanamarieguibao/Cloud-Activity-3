@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Math Galaxy - Grade 1</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    min-height: 100vh;
+    color: white;
+    background:
+        radial-gradient(circle at 20% 20%, #3949ab 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 30%, #fff 0 1px, transparent 2px),
+        radial-gradient(circle at 60% 80%, #fff 0 2px, transparent 3px),
+        radial-gradient(circle at 10% 90%, #64b5f6 0 1px, transparent 2px),
+        linear-gradient(135deg, #080b2b, #111858, #250d46);
+    background-size: 150px 150px, 200px 200px, 170px 170px, 230px 230px, cover;
+}
+
+/* HEADER */
+
+header {
+    text-align: center;
+    padding: 25px 15px 10px;
+}
+
+header .rocket {
+    font-size: 55px;
+    animation: float 2s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-10px) rotate(3deg); }
+}
+
+header h1 {
+    font-size: clamp(2rem, 7vw, 4rem);
+    color: #ffe66d;
+    text-shadow: 0 0 15px #ff9f43;
+}
+
+header p {
+    color: #dfe6e9;
+    margin-top: 5px;
+}
+
+/* TOP BAR */
+
+.topbar {
+    width: 92%;
+    max-width: 950px;
+    margin: 15px auto;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 30px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.energy {
+    color: #ffe66d;
+    font-weight: bold;
+}
+
+/* MAIN */
+
+.container {
+    width: 92%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* WELCOME */
+
+.welcome {
+    text-align: center;
+    padding: 30px 15px;
+}
+
+.welcome h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    color: #dfe6e9;
+    line-height: 1.6;
+}
+
+/* PLANETS */
+
+.galaxy-map {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.planet {
+    border: none;
+    color: white;
+    cursor: pointer;
+    min-height: 140px;
+    border-radius: 50%;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 0 25px rgba(255,255,255,.25);
+    transition: .3s;
+}
+
+.planet:hover {
+    transform: scale(1.12) rotate(5deg);
+}
+
+.p1 {
+    background: radial-gradient(circle at 30% 25%, #fff176, #ff9800 60%, #e65100);
+}
+
+.p2 {
+    background: radial-gradient(circle at 30% 25%, #81d4fa, #1976d2 60%, #0d47a1);
+}
+
+.p3 {
+    background: radial-gradient(circle at 30% 25%, #ff80ab, #e91e63 60%, #880e4f);
+}
+
+.p4 {
+    background: radial-gradient(circle at 30% 25%, #ce93d8, #7b1fa2 60%, #4a148c);
+}
+
+.p5 {
+    background: radial-gradient(circle at 30% 25%, #80cbc4, #00897b 60%, #004d40);
+}
+
+.planet-icon {
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 5px;
+}
+
+/* CONTENT */
+
+.screen {
+    display: none;
+    background: rgba(12, 17, 55, .92);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 25px;
+    padding: 30px 20px;
+    margin: 25px auto;
+    box-shadow: 0 15px 40px rgba(0,0,0,.35);
+}
+
+.screen.active {
+    display: block;
+    animation: appear .35s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.screen h2 {
+    text-align: center;
+    color: #ffe66d;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.lesson-text {
+    max-width: 700px;
+    margin: auto;
+    text-align: center;
+    line-height: 1.8;
+    color: #e8eaf6;
+}
+
+/* NUMBER EXPLORER */
+
+.number-display {
+    text-align: center;
+    margin: 25px auto;
+}
+
+.big-number {
+    font-size: 7rem;
+    color: #ffe66d;
+    text-shadow: 0 0 20px #ff9f43;
+}
+
+.objects {
+    font-size: 2.5rem;
+    min-height: 60px;
+}
+
+.number-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.number-buttons button {
+    width: 48px;
+    height: 48px;
+    border: 0;
+    border-radius: 50%;
+    background: #5c6bc0;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.number-buttons button:hover {
+    background: #ff9f43;
+}
+
+/* MATH MACHINE */
+
+.machine {
+    max-width: 550px;
+    margin: auto;
+    background: linear-gradient(145deg, #263238, #111);
+    border: 5px solid #607d8b;
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: inset 0 0 20px #000, 0 10px 30px #000;
+}
+
+.machine-display {
+    background: #102a19;
+    color: #76ff03;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-family: monospace;
+}
+
+.machine-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.machine button {
+    border: 0;
+    border-radius: 12px;
+    min-width: 60px;
+    padding: 13px;
+    background: #455a64;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.machine button:hover {
+    background: #ff9800;
+}
+
+/* SHAPES */
+
+.shape-world {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.shape-card {
+    width: 150px;
+    text-align: center;
+    background: rgba(255,255,255,.07);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.shape {
+    width: 80px;
+    height: 80px;
+    margin: auto auto 15px;
+}
+
+.circle {
+    border-radius: 50%;
+    background: #ff5252;
+}
+
+.square {
+    background: #42a5f5;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 80px solid #66bb6a;
+}
+
+.rectangle {
+    width: 100px;
+    background: #ab47bc;
+}
+
+/* PATTERN */
+
+.pattern {
+    text-align: center;
+    font-size: 3rem;
+    letter-spacing: 10px;
+    margin: 30px 0;
+}
+
+.pattern-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.pattern-options button {
+    font-size: 2rem;
+    background: #3949ab;
+    border: 2px solid #7986cb;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.pattern-options button:hover {
+    background: #ff9800;
+}
+
+/* QUIZ */
+
+.quiz {
+    max-width: 650px;
+    margin: auto;
+    text-align: center;
+}
+
+.question {
+    font-size: 1.8rem;
+    color: white;
+    margin: 25px 0;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.answers button {
+    border: none;
+    padding: 18px;
+    border-radius: 15px;
+    background: #3949ab;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.answers button:hover {
+    background: #5c6bc0;
+    transform: scale(1.03);
+}
+
+.correct {
+    background: #00c853 !important;
+}
+
+.wrong {
+    background: #d50000 !important;
+}
+
+.feedback {
+    min-height: 40px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+}
+
+.action {
+    border: none;
+    border-radius: 25px;
+    padding: 13px 25px;
+    background: #ffca28;
+    color: #3e2723;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.action:hover {
+    background: #ffd740;
+}
+
+/* PROGRESS */
+
+.progress {
+    height: 12px;
+    background: #263238;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px auto;
+    max-width: 500px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg,#00e5ff,#76ff03);
+    transition: .3s;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 30px 15px;
+    color: #b0bec5;
+}
+
+@media(max-width:700px) {
+
+    .galaxy-map {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .planet {
+        min-height: 125px;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        font-size: .85rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="rocket">🚀</div>
+    <h1>Math Galaxy</h1>
+    <p>Grade 1 Mathematics Space Academy</p>
+</header>
+
+<div class="topbar">
+    <span>👩‍🚀 Cadet: Young Mathematician</span>
+    <span class="energy">⭐ Stars: <span id="stars">0</span></span>
+</div>
+
+<main class="container">
+
+    <div class="welcome">
+        <h2>🌌 Choose Your Math Planet</h2>
+        <p>
+            Your spaceship is ready! Visit each planet and complete
+            the mathematical missions.
+        </p>
+    </div>
+
+    <div class="galaxy-map">
+
+        <button class="planet p1" onclick="openScreen('numbers')">
+            <span class="planet-icon">🔢</span>
+            Number Planet
+        </button>
+
+        <button class="planet p2" onclick="openScreen('addition')">
+            <span class="planet-icon">➕</span>
+            Addition Planet
+        </button>
+
+        <button class="planet p3" onclick="openScreen('subtraction')">
+            <span class="planet-icon">➖</span>
+            Subtraction Planet
+        </button>
+
+        <button class="planet p4" onclick="openScreen('shapes')">
+            <span class="planet-icon">🔺</span>
+            Shape Planet
+        </button>
+
+        <button class="planet p5" onclick="openScreen('patterns')">
+            <span class="planet-icon">🧩</span>
+            Pattern Planet
+        </button>
+
+    </div>
+
+
+    <!-- NUMBERS -->
+
+    <section id="numbers" class="screen">
+
+        <h2>🔢 Number Planet</h2>
+
+        <div class="lesson-text">
+            <p>
+                Numbers help us count things. Pick a number and
+                discover how many space objects it represents!
+            </p>
+        </div>
+
+        <div class="number-display">
+
+            <div id="bigNumber" class="big-number">1</div>
+
+            <div id="objects" class="objects">⭐</div>
+
+        </div>
+
+        <div class="number-buttons" id="numberButtons"></div>
+
+    </section>
+
+
+    <!-- ADDITION -->
+
+    <section id="addition" class="screen">
+
+        <h2>➕ Addition Machine</h2>
+
+        <div class="lesson-text">
+            <p>
+                Addition means putting groups together.
+                Use the space calculator below!
+            </p>
+        </div>
+
+        <div class="machine">
+
+            <div id="additionDisplay" class="machine-display">
+                0 + 0 = 0
+            </div>
+
+            <div class="machine-row">
+                <button onclick="addNumber(1)">1</button>
+                <button onclick="addNumber(2)">2</button>
+                <button onclick="addNumber(3)">3</button>
+                <button onclick="addNumber(4)">4</button>
+                <button onclick="addNumber(5)">5</button>
+            </div>
+
+            <div class="machine-row">
+                <button onclick="addNumber(6)">6</button>
+                <button onclick="addNumber(7)">7</button>
+                <button onclick="addNumber(8)">8</button>
+                <button onclick="addNumber(9)">9</button>
+                <button onclick="resetAddition()">C</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUBTRACTION -->
+
+    <section id="subtraction" class="screen">
+
+        <h2>➖ Subtraction Mission</h2>
+
+        <div class="lesson-text">
+            <p>
+                Subtraction means taking something away.
+                Help the astronaut collect the remaining stars!
+            </p>
+        </div>
+
+        <div class="machine">
+
+            <div id="subDisplay" class="machine-display">
+                8 - 3 = ?
+            </div>
+
+            <div class="machine-row">
+                <button onclick="checkSub(1)">1</button>
+                <button onclick="checkSub(2)">2</button>
+                <button onclick="checkSub(3)">3</button>
+                <button onclick="checkSub(4)">4</button>
+                <button onclick="checkSub(5)">5</button>
+            </div>
+
+            <div class="machine-row">
+                <button onclick="checkSub(6)">6</button>
+                <button onclick="checkSub(7)">7</button>
+                <button onclick="checkSub(8)">8</button>
+                <button onclick="checkSub(9)">9</button>
+            </div>
+
+            <div id="subFeedback"
+                 style="text-align:center;margin-top:15px;">
+            </div>
+
+            <button class="action" onclick="newSubtraction()">
+                New Mission 🚀
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- SHAPES -->
+
+    <section id="shapes" class="screen">
+
+        <h2>🔷 Shape Planet</h2>
+
+        <div class="lesson-text">
+            <p>
+                Shapes are everywhere in space and on Earth.
+                Can you identify these shapes?
+            </p>
+        </div>
+
+        <div class="shape-world">
+
+            <div class="shape-card">
+                <div class="shape circle"></div>
+                <h3>Circle</h3>
+                <p>0 corners</p>
+            </div>
+
+            <div class="shape-card">
+                <div class="shape square"></div>
+                <h3>Square</h3>
+                <p>4 equal sides</p>
+            </div>
+
+            <div class="shape-card">
+                <div class="shape triangle"></div>
+                <h3>Triangle</h3>
+                <p>3 sides</p>
+            </div>
+
+            <div class="shape-card">
+                <div class="shape rectangle"></div>
+                <h3>Rectangle</h3>
+                <p>4 sides</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PATTERNS -->
+
+    <section id="patterns" class="screen">
+
+        <h2>🧩 Pattern Planet</h2>
+
+        <div class="lesson-text">
+            <p>
+                Look carefully at the pattern.
+                Which object should come next?
+            </p>
+        </div>
+
+        <div class="pattern">
+            🔴 🔵 🔴 🔵 ❓
+        </div>
+
+        <div class="pattern-options">
+            <button onclick="patternAnswer('🔴')">🔴</button>
+            <button onclick="patternAnswer('🟢')">🟢</button>
+            <button onclick="patternAnswer('⭐')">⭐</button>
+        </div>
+
+        <div id="patternFeedback"
+             style="text-align:center;margin-top:20px;font-size:1.3rem;">
+        </div>
+
+    </section>
+
+
+    <!-- QUIZ -->
+
+    <section id="quiz" class="screen">
+
+        <h2>🏆 Final Space Challenge</h2>
+
+        <div class="quiz">
+
+            <div>
+                Question
+                <strong id="quizNumber">1</strong> / 8
+            </div>
+
+            <div class="progress">
+                <div id="quizProgress" class="progress-bar"></div>
+            </div>
+
+            <div id="quizQuestion" class="question">
+                What is 2 + 3?
+            </div>
+
+            <div id="quizAnswers" class="answers"></div>
+
+            <div id="quizFeedback" class="feedback"></div>
+
+            <button id="nextQuiz"
+                    class="action"
+                    style="display:none;"
+                    onclick="nextQuizQuestion()">
+                Next Mission ➡️
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    🚀 Math Galaxy • Grade 1 Mathematics
+    <br>
+    Learn • Explore • Discover
+</footer>
+
+
+<script>
+
+/* =========================
+   GENERAL NAVIGATION
+========================= */
+
+function openScreen(id) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+    if(id === "numbers") {
+        createNumberButtons();
+    }
+
+    if(id === "quiz") {
+        startQuiz();
+    }
+}
+
+
+/* =========================
+   STARS
+========================= */
+
+let stars = 0;
+
+function earnStar(amount = 1) {
+
+    stars += amount;
+
+    document.getElementById("stars").textContent = stars;
+}
+
+
+/* =========================
+   NUMBER PLANET
+========================= */
+
+function createNumberButtons() {
+
+    const container =
+        document.getElementById("numberButtons");
+
+    if(container.children.length > 0) return;
+
+    for(let i = 1; i <= 20; i++) {
+
+        const button = document.createElement("button");
+
+        button.textContent = i;
+
+        button.onclick = function() {
+            showNumber(i);
+        };
+
+        container.appendChild(button);
+    }
+}
+
+
+function showNumber(number) {
+
+    document.getElementById("bigNumber").textContent =
+        number;
+
+    let objects = "";
+
+    for(let i = 0; i < number; i++) {
+        objects += "⭐";
+    }
+
+    document.getElementById("objects").textContent =
+        objects;
+
+    earnStar(1);
+}
+
+
+/* =========================
+   ADDITION MACHINE
+========================= */
+
+let firstNumber = null;
+let secondNumber = null;
+
+function addNumber(number) {
+
+    if(firstNumber === null) {
+
+        firstNumber = number;
+
+        document.getElementById("additionDisplay")
+            .textContent =
+            number + " + 0 = ?";
+
+    } else {
+
+        secondNumber = number;
+
+        const result =
+            firstNumber + secondNumber;
+
+        document.getElementById("additionDisplay")
+            .textContent =
+            firstNumber + " + " +
+            secondNumber + " = " +
+            result;
+
+        earnStar(1);
+
+        firstNumber = null;
+        secondNumber = null;
+    }
+}
+
+
+function resetAddition() {
+
+    firstNumber = null;
+    secondNumber = null;
+
+    document.getElementById("additionDisplay")
+        .textContent =
+        "0 + 0 = 0";
+}
+
+
+/* =========================
+   SUBTRACTION
+========================= */
+
+let subA = 8;
+let subB = 3;
+
+function newSubtraction() {
+
+    subA = Math.floor(Math.random() * 8) + 2;
+
+    subB =
+        Math.floor(Math.random() * subA);
+
+    document.getElementById("subDisplay")
+        .textContent =
+        subA + " - " + subB + " = ?";
+
+    document.getElementById("subFeedback")
+        .textContent = "";
+}
+
+
+function checkSub(answer) {
+
+    const correct =
+        subA - subB;
+
+    if(answer === correct) {
+
+        document.getElementById("subFeedback")
+            .innerHTML =
+            "🎉 Correct! Great space explorer!";
+
+        earnStar(2);
+
+    } else {
+
+        document.getElementById("subFeedback")
+            .innerHTML =
+            "🌟 Try again!";
+    }
+}
+
+
+/* =========================
+   PATTERN
+========================= */
+
+function patternAnswer(answer) {
+
+    const feedback =
+        document.getElementById("patternFeedback");
+
+    if(answer === "🔴") {
+
+        feedback.innerHTML =
+            "🎉 Correct! The pattern is red, blue, red, blue, red!";
+
+        earnStar(2);
+
+    } else {
+
+        feedback.innerHTML =
+            "💭 Look again. What color comes after blue?";
+    }
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+const quiz = [
+
+    {
+        q: "What is 2 + 3?",
+        a: ["4", "5", "6", "7"],
+        c: "5"
+    },
+
+    {
+        q: "What is 7 - 2?",
+        a: ["3", "4", "5", "6"],
+        c: "5"
+    },
+
+    {
+        q: "How many sides does a triangle have?",
+        a: ["2", "3", "4", "5"],
+        c: "3"
+    },
+
+    {
+        q: "What number comes after 9?",
+        a: ["8", "10", "11", "12"],
+        c: "10"
+    },
+
+    {
+        q: "What is 4 + 4?",
+        a: ["6", "7", "8", "9"],
+        c: "8"
+    },
+
+    {
+        q: "What is 9 - 5?",
+        a: ["2", "3", "4", "5"],
+        c: "4"
+    },
+
+    {
+        q: "Which shape has no corners?",
+        a: ["Square", "Triangle", "Circle", "Rectangle"],
+        c: "Circle"
+    },
+
+    {
+        q: "What comes next? 🔵 🔴 🔵 🔴 ❓",
+        a: ["🔵", "🔴", "⭐", "🟢"],
+        c: "🔵"
+    }
+
+];
+
+
+let quizIndex = 0;
+let quizScore = 0;
+let quizRunning = false;
+
+
+function startQuiz() {
+
+    if(quizRunning) return;
+
+    quizRunning = true;
+
+    quizIndex = 0;
+    quizScore = 0;
+
+    loadQuiz();
+}
+
+
+function loadQuiz() {
+
+    const current =
+        quiz[quizIndex];
+
+    document.getElementById("quizNumber")
+        .textContent =
+        quizIndex + 1;
+
+    document.getElementById("quizQuestion")
+        .textContent =
+        current.q;
+
+    document.getElementById("quizFeedback")
+        .textContent = "";
+
+    document.getElementById("nextQuiz")
+        .style.display =
+        "none";
+
+    const answers =
+        document.getElementById("quizAnswers");
+
+    answers.innerHTML = "";
+
+    current.a.forEach(answer => {
+
+        const button =
+            document.createElement("button");
+
+        button.textContent = answer;
+
+        button.onclick = function() {
+            checkQuizAnswer(
+                button,
+                answer,
+                current.c
+            );
+        };
+
+        answers.appendChild(button);
+
+    });
+
+    document.getElementById("quizProgress")
+        .style.width =
+        ((quizIndex / quiz.length) * 100) + "%";
+}
+
+
+function checkQuizAnswer(button, answer, correct) {
+
+    const buttons =
+        document.querySelectorAll("#quizAnswers button");
+
+    buttons.forEach(btn => {
+        btn.disabled = true;
+    });
+
+    if(answer === correct) {
+
+        button.classList.add("correct");
+
+        quizScore++;
+
+        earnStar(3);
+
+        document.getElementById("quizFeedback")
+            .innerHTML =
+            "🚀 Excellent! Correct answer!";
+
+    } else {
+
+        button.classList.add("wrong");
+
+        buttons.forEach(btn => {
+
+            if(btn.textContent === correct) {
+                btn.classList.add("correct");
+            }
+
+        });
+
+        document.getElementById("quizFeedback")
+            .innerHTML =
+            "💫 Nice try! The answer is " +
+            "<strong>" + correct + "</strong>.";
+    }
+
+    document.getElementById("nextQuiz")
+        .style.display =
+        "inline-block";
+}
+
+
+function nextQuizQuestion() {
+
+    quizIndex++;
+
+    if(quizIndex >= quiz.length) {
+
+        finishQuiz();
+
+    } else {
+
+        loadQuiz();
+    }
+}
+
+
+function finishQuiz() {
+
+    document.getElementById("quizQuestion")
+        .innerHTML =
+        "🏆 Mission Complete!";
+
+    document.getElementById("quizAnswers")
+        .innerHTML = "";
+
+    document.getElementById("quizFeedback")
+        .innerHTML =
+        "You scored <strong>" +
+        quizScore +
+        "</strong> out of <strong>" +
+        quiz.length +
+        "</strong>!<br><br>" +
+        getQuizMessage();
+
+    document.getElementById("quizProgress")
+        .style.width =
+        "100%";
+
+    const button =
+        document.getElementById("nextQuiz");
+
+    button.textContent =
+        "🔄 Play Again";
+
+    button.onclick =
+        restartQuiz;
+}
+
+
+function getQuizMessage() {
+
+    if(quizScore === quiz.length) {
+        return "🌟 PERFECT! You are a Math Galaxy Champion!";
+    }
+
+    if(quizScore >= 6) {
+        return "🚀 Amazing work, Space Cadet!";
+    }
+
+    if(quizScore >= 4) {
+        return "⭐ Good job! Keep practicing!";
+    }
+
+    return "🌱 Keep learning! You can do it!";
+}
+
+
+function restartQuiz() {
+
+    quizRunning = false;
+
+    document.getElementById("nextQuiz")
+        .onclick =
+        nextQuizQuestion;
+
+    startQuiz();
+}
+
+
+/* Initialize */
+
+createNumberButtons();
+
+</script>
+
+</body>
+</html>
