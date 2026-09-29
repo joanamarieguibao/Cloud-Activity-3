@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f1">
+  <meta name="description" content="A happy little math playground for Grade 1: count, add, compare, and discover shapes.">
+  <title>Number Nest — Grade 1 Math Adventures</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #193c3a;
+      --muted: #687d79;
+      --green: #17625b;
+      --green-dark: #124b47;
+      --green-pale: #e5f4ec;
+      --coral: #ff816b;
+      --yellow: #ffd66e;
+      --paper: #ffffff;
+      --background: #f5f7f1;
+      --line: #e4ebe4;
+      --shadow: 0 18px 48px rgba(28, 67, 59, .09);
+      --rounded: "Trebuchet MS", "Avenir Next", ui-rounded, system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 93% 5%, rgba(255, 214, 110, .12), transparent 220px),
+        var(--background);
+      color: var(--ink);
+      font-family: var(--rounded);
+      -webkit-font-smoothing: antialiased;
+    }
+    button, a { font: inherit; }
+    button { color: inherit; }
+    [hidden] { display: none !important; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid #f2a543; outline-offset: 4px; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .page-shell { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar {
+      display: flex;
+      min-height: 88px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .brand-mark {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      border-radius: 16px;
+      background: var(--green);
+      box-shadow: 0 6px 14px rgba(23, 98, 91, .2);
+    }
+    .brand-copy { display: grid; gap: 1px; }
+    .brand-name { font-size: 21px; font-weight: 900; letter-spacing: -.8px; line-height: 1; }
+    .brand-name span { color: var(--green); }
+    .brand-tagline { color: var(--muted); font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .35px; }
+    .main-nav { display: flex; align-items: center; gap: 32px; margin-left: auto; margin-right: 18px; }
+    .main-nav a {
+      color: #55706b;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: color .18s ease;
+    }
+    .main-nav a:hover { color: var(--green); }
+    .topbar-actions { display: flex; align-items: center; gap: 11px; }
+    .star-counter, .grade-pill {
+      display: inline-flex;
+      height: 42px;
+      align-items: center;
+      gap: 7px;
+      padding: 0 13px;
+      border: 1px solid #f0e5c3;
+      border-radius: 999px;
+      background: #fff9e9;
+      color: #765b20;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .star-counter strong { font-size: 14px; color: var(--ink); }
+    .grade-pill { border-color: var(--line); background: #fff; color: var(--ink); }
+    .grade-avatar {
+      display: grid;
+      width: 25px;
+      height: 25px;
+      place-items: center;
+      border-radius: 50%;
+      background: #eaf4ff;
+      font-size: 15px;
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.03fr .97fr;
+      min-height: 330px;
+      overflow: hidden;
+      border-radius: 30px;
+      background: var(--green-dark);
+      color: #fff;
+      box-shadow: 0 20px 45px rgba(23, 78, 71, .16);
+      isolation: isolate;
+    }
+    .hero::before, .hero::after { position: absolute; z-index: -1; content: ""; border-radius: 50%; }
+    .hero::before { width: 370px; height: 370px; top: -245px; left: 42%; background: rgba(255,255,255,.035); }
+    .hero::after { width: 240px; height: 240px; right: -100px; bottom: -156px; background: rgba(255,255,255,.045); }
+    .hero-copy { align-self: center; padding: 40px 0 42px 48px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      color: #bfe1d7;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 4px rgba(255,214,110,.12); }
+    .hero h1 { max-width: 510px; margin: 0; font-size: clamp(34px, 4.2vw, 49px); line-height: 1.08; letter-spacing: -1.8px; }
+    .hero h1 em { color: var(--yellow); font-style: normal; }
+    .hero-copy > p { max-width: 400px; margin: 14px 0 22px; color: #d0e3dd; font-size: 14px; line-height: 1.65; }
+    .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 15px; }
+    .button {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 19px;
+      border: 0;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-yellow { background: var(--yellow); color: #30443d; box-shadow: 0 7px 17px rgba(6, 36, 32, .2); }
+    .button-yellow:hover { background: #ffe08b; box-shadow: 0 10px 22px rgba(6, 36, 32, .23); }
+    .hero-note { color: #b5d0c8; font-family: Arial, sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1px; }
+    .hero-art { position: relative; display: grid; min-width: 0; min-height: 310px; place-items: center; padding: 12px 24px 12px 0; }
+    .hero-art svg { display: block; width: min(100%, 440px); overflow: visible; }
+    .art-sticker {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 13px;
+      border: 3px solid rgba(255,255,255,.72);
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 8px 21px rgba(8, 37, 34, .17);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .art-sticker-one { top: 35px; right: 27px; transform: rotate(5deg); }
+    .art-sticker-two { bottom: 30px; left: 19px; transform: rotate(-6deg); }
+
+    .journey-card {
+      display: grid;
+      grid-template-columns: 1fr 1.45fr .8fr;
+      align-items: center;
+      gap: 28px;
+      margin-top: 20px;
+      padding: 21px 25px;
+      border: 1px solid #eaf0e9;
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 8px 25px rgba(28, 67, 59, .045);
+    }
+    .journey-heading { display: flex; align-items: center; gap: 13px; }
+    .journey-icon { display: grid; width: 49px; height: 49px; flex: 0 0 auto; place-items: center; border-radius: 16px; background: #fff2c9; font-size: 24px; }
+    .overline { display: block; margin-bottom: 4px; color: #80918b; font-family: Arial, sans-serif; font-size: 9px; font-weight: 900; letter-spacing: 1.15px; }
+    .journey-heading h2 { margin: 0; font-size: 16px; letter-spacing: -.3px; }
+    .goal-area { min-width: 0; }
+    .goal-label-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+    .goal-label { font-size: 12px; font-weight: 900; }
+    .goal-number { color: var(--green); font-size: 11px; font-weight: 900; white-space: nowrap; }
+    .goal-track { height: 9px; overflow: hidden; border-radius: 20px; background: #edf1ec; }
+    .goal-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #58c29b, #8fd7a0); transition: width .35s ease; }
+    .journey-message { padding-left: 19px; border-left: 1px solid var(--line); color: #78908a; font-size: 11px; line-height: 1.5; }
+    .journey-message strong { display: block; margin-bottom: 3px; color: var(--ink); font-size: 12px; }
+
+    .activities-section { padding: 47px 0 0; scroll-margin-top: 18px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+    .section-heading h2 { margin: 0; font-size: clamp(23px, 3vw, 28px); letter-spacing: -.85px; }
+    .section-heading p { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .section-mini-note { display: inline-flex; align-items: center; gap: 7px; padding-bottom: 4px; color: #769089; font-family: Arial, sans-serif; font-size: 10px; font-weight: 800; }
+    .activity-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
+    .activity-card {
+      position: relative;
+      display: flex;
+      min-height: 260px;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 20px;
+      border: 1px solid transparent;
+      border-radius: 22px;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .activity-card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(38, 72, 62, .09); }
+    .activity-card[data-theme="mint"] { background: #e8f5ed; }
+    .activity-card[data-theme="peach"] { background: #fff0e9; }
+    .activity-card[data-theme="lilac"] { background: #f0edff; }
+    .activity-card[data-theme="blue"] { background: #eaf4fb; }
+    .activity-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .activity-icon { display: grid; width: 56px; height: 56px; place-items: center; border-radius: 18px; background: rgba(255,255,255,.78); font-size: 29px; box-shadow: 0 4px 10px rgba(48,72,58,.035); }
+    .activity-badge { display: inline-flex; min-height: 23px; align-items: center; padding: 0 9px; border-radius: 999px; background: rgba(255,255,255,.77); color: #70827c; font-family: Arial, sans-serif; font-size: 8px; font-weight: 900; letter-spacing: .6px; white-space: nowrap; }
+    .activity-badge.is-done { background: #d6f2df; color: #267250; }
+    .activity-card h3 { margin: 17px 0 6px; font-size: 18px; letter-spacing: -.45px; }
+    .activity-card p { max-width: 240px; margin: 0; color: #657c74; font-size: 11px; line-height: 1.6; }
+    .activity-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 18px; }
+    .question-count { color: #71857d; font-family: Arial, sans-serif; font-size: 9px; font-weight: 800; }
+    .activity-play {
+      display: inline-flex;
+      min-height: 36px;
+      align-items: center;
+      gap: 7px;
+      padding: 0 11px 0 13px;
+      border: 0;
+      border-radius: 11px;
+      background: #fff;
+      box-shadow: 0 3px 8px rgba(48,72,58,.06);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 900;
+      white-space: nowrap;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .activity-play:hover { transform: translateY(-1px); background: var(--green); color: #fff; }
+    .play-arrow { display: grid; width: 20px; height: 20px; place-items: center; border-radius: 7px; background: rgba(20,78,71,.08); font-size: 12px; }
+    .activity-play:hover .play-arrow { background: rgba(255,255,255,.2); }
+
+    .tip-card {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      margin: 22px 0 35px;
+      padding: 18px 22px;
+      border: 1px solid #f4e8c3;
+      border-radius: 20px;
+      background: #fff8e4;
+    }
+    .tip-icon { display: grid; width: 46px; height: 46px; flex: 0 0 auto; place-items: center; border-radius: 15px; background: #ffedb0; font-size: 23px; }
+    .tip-copy { flex: 1; }
+    .tip-copy .overline { color: #aa8b3d; }
+    .tip-copy p { margin: 0; color: #5e6251; font-size: 12px; line-height: 1.5; }
+    .tip-copy strong { color: #3d4b3d; }
+    .tip-sticker { padding: 8px 11px; border: 1px dashed #e6ca78; border-radius: 10px; color: #8e793b; font-family: Arial, sans-serif; font-size: 9px; font-weight: 900; letter-spacing: .7px; white-space: nowrap; }
+    .site-footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 0 0 24px; color: #84948c; font-family: Arial, sans-serif; font-size: 10px; }
+    .footer-brand { color: #59756d; font-weight: 900; }
+
+    /* The lesson dialog keeps all four adventures in one easy-to-follow flow. */
+    .lesson-dialog {
+      width: min(620px, calc(100% - 24px));
+      max-width: 620px;
+      max-height: min(90vh, 850px);
+      padding: 0;
+      overflow: auto;
+      border: 0;
+      border-radius: 27px;
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 28px 90px rgba(9, 36, 32, .28);
+    }
+    .lesson-dialog::backdrop { background: rgba(12, 35, 32, .62); backdrop-filter: blur(4px); }
+    .lesson-inner { padding: 27px 34px 31px; }
+    .lesson-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .lesson-title-wrap { display: flex; min-width: 0; align-items: center; gap: 12px; }
+    .lesson-icon { display: grid; width: 48px; height: 48px; flex: 0 0 auto; place-items: center; border-radius: 15px; background: #e8f5ed; font-size: 24px; }
+    .lesson-eyebrow { margin: 0 0 3px; color: #7b9289; font-family: Arial, sans-serif; font-size: 9px; font-weight: 900; letter-spacing: 1px; }
+    .lesson-top h2 { margin: 0; font-size: 18px; letter-spacing: -.5px; }
+    .close-button { display: grid; width: 38px; height: 38px; flex: 0 0 auto; place-items: center; border: 0; border-radius: 12px; background: #f2f5f1; color: #58716b; cursor: pointer; font-size: 23px; line-height: 1; }
+    .close-button:hover { background: #e9efea; }
+    .lesson-progress-wrap { margin: 20px 0 23px; }
+    .lesson-progress-heading { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 8px; color: #788b83; font-family: Arial, sans-serif; font-size: 10px; font-weight: 800; }
+    .lesson-progress-heading strong { color: var(--green); }
+    .lesson-track { height: 7px; overflow: hidden; border-radius: 20px; background: #edf1ec; }
+    .lesson-track-fill { width: 0; height: 100%; border-radius: inherit; background: #61c59a; transition: width .3s ease; }
+    .question-prompt { margin: 0; text-align: center; font-size: 22px; letter-spacing: -.6px; line-height: 1.3; }
+    .question-hint { min-height: 20px; margin: 6px auto 15px; color: #75887f; text-align: center; font-size: 11px; line-height: 1.5; }
+    .question-visual {
+      display: grid;
+      min-height: 138px;
+      place-items: center;
+      margin-bottom: 17px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #f5f8f3;
+    }
+    .count-board { display: grid; grid-template-columns: repeat(5, 40px); justify-content: center; gap: 8px 10px; }
+    .counter { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 13px; background: white; box-shadow: 0 3px 9px rgba(41,78,63,.06); font-size: 23px; animation: pop-in .23s both; }
+    .addition-board { display: flex; align-items: center; justify-content: center; gap: 13px; }
+    .addition-group { display: flex; max-width: 155px; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 9px; border-radius: 14px; background: #fff; }
+    .addition-dot { display: grid; width: 26px; height: 26px; place-items: center; border-radius: 50%; background: #ffe7dc; font-size: 16px; }
+    .math-symbol { color: #5e8c7a; font-size: 24px; font-weight: 900; }
+    .shape-target { display: grid; width: 122px; height: 122px; place-items: center; border-radius: 21px; background: #fff; box-shadow: 0 5px 15px rgba(41,78,63,.06); }
+    .shape-target svg { width: 92px; height: 92px; }
+    .compare-board { display: flex; align-items: center; justify-content: center; gap: 13px; width: 100%; }
+    .compare-group { display: flex; width: min(42%, 180px); min-height: 82px; flex-wrap: wrap; align-content: center; justify-content: center; gap: 3px; padding: 9px; border: 1px solid #e7eee6; border-radius: 15px; background: #fff; font-size: 22px; }
+    .compare-group-label { width: 100%; margin-bottom: 3px; color: #7f9388; text-align: center; font-family: Arial, sans-serif; font-size: 9px; font-weight: 900; letter-spacing: .7px; }
+    .compare-versus { color: #8da197; font-size: 12px; font-weight: 900; }
+    .answer-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+    .answer-grid.is-labels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .answer-option {
+      display: flex;
+      min-height: 55px;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 6px;
+      border: 2px solid #e8eee8;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 900;
+      transition: border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+    .answer-option:hover:not(:disabled) { transform: translateY(-2px); border-color: #90cdb0; background: #f5fbf6; }
+    .answer-option:disabled { cursor: default; }
+    .answer-option.is-correct { border-color: #64c593; background: #eaf8ef; color: #226746; }
+    .answer-option.is-wrong { border-color: #f1a090; background: #fff0ec; animation: shake .22s ease; }
+    .answer-option.is-shape { min-height: 84px; flex-direction: column; font-size: 10px; }
+    .answer-option.is-shape svg { width: 48px; height: 48px; }
+    .answer-grid.is-labels .answer-option { min-height: 50px; font-size: 12px; }
+    .feedback {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-top: 14px;
+      padding: 11px 14px;
+      border-radius: 13px;
+      background: #eaf8ef;
+      color: #377555;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .feedback.is-wrong { background: #fff4e4; color: #806630; }
+    .feedback-icon { flex: 0 0 auto; font-size: 22px; }
+    .lesson-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
+    .button-green { min-height: 45px; background: var(--green); color: white; }
+    .button-green:hover { background: #104f49; box-shadow: 0 6px 14px rgba(23,98,91,.18); }
+    .completion-art { display: grid; width: 100%; min-height: 145px; place-items: center; position: relative; overflow: hidden; border-radius: 17px; background: linear-gradient(135deg, #fff3ca, #e9f8ee); }
+    .completion-art::before, .completion-art::after { position: absolute; color: #e8bd4e; content: "✦"; font-size: 32px; }
+    .completion-art::before { top: 18px; left: 23%; transform: rotate(-13deg); }
+    .completion-art::after { right: 22%; bottom: 17px; color: #ff927b; font-size: 24px; transform: rotate(14deg); }
+    .trophy-emoji { font-size: 58px; filter: drop-shadow(0 8px 7px rgba(100,76,18,.15)); animation: bob 1.5s ease-in-out infinite; }
+    .is-hidden { display: none !important; }
+
+    @keyframes pop-in { from { opacity: 0; transform: scale(.75); } to { opacity: 1; transform: scale(1); } }
+    @keyframes shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+    @keyframes bob { 50% { transform: translateY(-5px) rotate(2deg); } }
+
+    @media (max-width: 980px) {
+      .page-shell { width: min(100% - 36px, 860px); }
+      .hero { grid-template-columns: 1.1fr .9fr; }
+      .hero-copy { padding-left: 34px; }
+      .hero-art { padding-right: 9px; }
+      .art-sticker-one { right: 11px; }
+      .activity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .activity-card { min-height: 235px; }
+    }
+    @media (max-width: 680px) {
+      .page-shell { width: calc(100% - 32px); }
+      .topbar { min-height: 74px; gap: 10px; }
+      .brand-mark { width: 40px; height: 40px; border-radius: 14px; }
+      .brand-name { font-size: 19px; }
+      .brand-tagline { display: none; }
+      .main-nav { display: none; }
+      .topbar-actions { gap: 6px; }
+      .star-counter, .grade-pill { height: 37px; padding: 0 9px; font-size: 10px; }
+      .star-counter { gap: 4px; }
+      .grade-pill { gap: 5px; }
+      .grade-avatar { width: 21px; height: 21px; font-size: 13px; }
+      .hero { grid-template-columns: 1fr; min-height: auto; border-radius: 24px; }
+      .hero-copy { padding: 29px 25px 6px; }
+      .eyebrow { margin-bottom: 12px; font-size: 9px; }
+      .hero h1 { max-width: 480px; font-size: clamp(34px, 9vw, 43px); }
+      .hero-copy > p { margin: 11px 0 16px; font-size: 12px; }
+      .button { min-height: 44px; font-size: 12px; }
+      .hero-note { font-size: 8px; }
+      .hero-art { min-height: 222px; max-height: 250px; padding: 0 17px 9px; }
+      .hero-art svg { width: min(88%, 340px); max-height: 220px; }
+      .art-sticker { padding: 8px 10px; font-size: 10px; }
+      .art-sticker-one { top: 16px; right: 16px; }
+      .art-sticker-two { bottom: 15px; left: 14px; }
+      .journey-card { grid-template-columns: 1fr; gap: 15px; padding: 17px; border-radius: 19px; }
+      .journey-icon { width: 43px; height: 43px; font-size: 22px; }
+      .journey-heading h2 { font-size: 15px; }
+      .journey-message { padding: 12px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+      .journey-message strong { display: inline; margin-right: 4px; }
+      .activities-section { padding-top: 37px; }
+      .section-heading { align-items: flex-start; margin-bottom: 15px; }
+      .section-heading h2 { font-size: 23px; }
+      .section-heading p { font-size: 11px; }
+      .section-mini-note { display: none; }
+      .activity-grid { gap: 11px; }
+      .activity-card { min-height: 240px; padding: 15px; border-radius: 18px; }
+      .activity-icon { width: 47px; height: 47px; border-radius: 15px; font-size: 25px; }
+      .activity-badge { padding: 0 7px; font-size: 7px; }
+      .activity-card h3 { margin-top: 14px; font-size: 15px; }
+      .activity-card p { font-size: 10px; }
+      .activity-card-bottom { align-items: flex-start; flex-direction: column; gap: 9px; padding-top: 13px; }
+      .activity-play { min-height: 33px; padding-left: 10px; font-size: 9px; }
+      .play-arrow { width: 18px; height: 18px; }
+      .tip-card { align-items: flex-start; gap: 12px; margin-top: 17px; padding: 15px; }
+      .tip-icon { width: 40px; height: 40px; font-size: 21px; }
+      .tip-copy p { font-size: 11px; }
+      .tip-sticker { display: none; }
+      .site-footer { align-items: flex-start; flex-direction: column; gap: 6px; padding-bottom: 18px; font-size: 9px; }
+      .lesson-inner { padding: 21px 18px 22px; }
+      .lesson-dialog { border-radius: 22px; }
+      .lesson-icon { width: 43px; height: 43px; }
+      .lesson-top h2 { font-size: 16px; }
+      .lesson-progress-wrap { margin: 18px 0 20px; }
+      .question-prompt { font-size: 20px; }
+      .question-hint { font-size: 10px; }
+      .question-visual { min-height: 125px; padding: 10px; }
+      .count-board { grid-template-columns: repeat(5, 34px); gap: 6px; }
+      .counter { width: 34px; height: 34px; border-radius: 11px; font-size: 20px; }
+      .compare-board { gap: 7px; }
+      .compare-group { width: 43%; min-height: 76px; padding: 7px; font-size: 19px; }
+      .answer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .answer-grid.is-labels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .answer-option { min-height: 49px; }
+      .answer-option.is-shape { min-height: 75px; }
+      .answer-option.is-shape svg { width: 41px; height: 41px; }
+      .answer-grid.is-labels .answer-option { min-height: 47px; padding: 5px 3px; font-size: 10px; }
+      .lesson-actions .button { width: 100%; }
+    }
+    @media (max-width: 380px) {
+      .page-shell { width: calc(100% - 24px); }
+      .brand { gap: 8px; }
+      .brand-mark { width: 36px; height: 36px; }
+      .brand-name { font-size: 17px; }
+      .star-counter { padding: 0 7px; }
+      .grade-pill { padding: 0 7px; }
+      .activity-card { min-height: 246px; padding: 12px; }
+      .activity-card h3 { font-size: 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="Number Nest home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M13 3.2v19.6M3.2 13h19.6" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+            <circle cx="13" cy="13" r="3.2" fill="#FFD66E"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">number <span>nest</span></span>
+          <span class="brand-tagline">little learners, big discoveries</span>
+        </span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#activities">My lessons</a>
+        <a href="#journey">My journey</a>
+      </nav>
+      <div class="topbar-actions">
+        <div class="star-counter">
+          <span aria-hidden="true">⭐</span><strong id="total-stars">0</strong><span>stars</span>
+        </div>
+        <div class="grade-pill"><span class="grade-avatar" aria-hidden="true">🧒</span><span>Grade 1</span></div>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR HAPPY PLACE TO LEARN</div>
+          <h1 id="hero-title">Math is a little more <em>magical</em> with you.</h1>
+          <p>Count, add, and explore your way through fun little challenges. Every try helps your math skills grow!</p>
+          <div class="hero-actions">
+            <a class="button button-yellow" href="#activities">Pick an adventure <span aria-hidden="true">→</span></a>
+            <span class="hero-note">SHORT LESSONS · BIG HIGH-FIVES</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 440 310" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="229" cy="161" r="132" fill="#24665E"/>
+            <circle cx="335" cy="82" r="12" fill="#62A994"/>
+            <circle cx="110" cy="228" r="8" fill="#62A994"/>
+            <path d="M103 81l5 10 11 2-8 8 2 11-10-5-10 5 2-11-8-8 11-2 5-10z" fill="#FFD66E"/>
+            <path d="M352 197l4 8 9 1-6 6 1 9-8-4-8 4 2-9-7-6 9-1 4-8z" fill="#FF8972"/>
+            <g transform="rotate(-8 126 166)">
+              <rect x="63" y="104" width="119" height="139" rx="19" fill="#FFFDF5"/>
+              <rect x="79" y="120" width="87" height="13" rx="6.5" fill="#DCEEE5"/>
+              <text x="122.5" y="183" text-anchor="middle" fill="#1B5A53" font-family="Trebuchet MS, sans-serif" font-size="39" font-weight="800">2 + 3</text>
+              <path d="M100 203h46" stroke="#F4A48D" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="109" cy="222" r="6" fill="#FFD66E"/>
+              <circle cx="128" cy="222" r="6" fill="#FF8972"/>
+              <circle cx="147" cy="222" r="6" fill="#79C8A6"/>
+            </g>
+            <g>
+              <path d="M272 87l9-21 12 19 21-10-3 23 22 8-20 12 8 21-23-4-11 20-10-21-23 5 8-22-19-13 22-7-1-23 20 13z" fill="#FFD66E"/>
+              <circle cx="286" cy="137" r="54" fill="#FFD66E"/>
+              <circle cx="268" cy="132" r="4" fill="#644E2B"/>
+              <circle cx="304" cy="132" r="4" fill="#644E2B"/>
+              <path d="M270 151c8 11 23 11 31 0" stroke="#644E2B" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="256" cy="145" r="6" fill="#F59A76" opacity=".8"/>
+              <circle cx="316" cy="145" r="6" fill="#F59A76" opacity=".8"/>
+            </g>
+            <g transform="rotate(7 277 232)">
+              <rect x="214" y="212" width="119" height="54" rx="13" fill="#FF8972"/>
+              <rect x="225" y="222" width="30" height="34" rx="7" fill="#FFE8D9"/>
+              <text x="240" y="246" text-anchor="middle" fill="#B65749" font-family="Trebuchet MS, sans-serif" font-size="20" font-weight="800">1</text>
+              <rect x="260" y="222" width="30" height="34" rx="7" fill="#DFF2E7"/>
+              <text x="275" y="246" text-anchor="middle" fill="#317768" font-family="Trebuchet MS, sans-serif" font-size="20" font-weight="800">2</text>
+              <rect x="295" y="222" width="27" height="34" rx="7" fill="#FFE5A1"/>
+              <text x="308.5" y="246" text-anchor="middle" fill="#916C1D" font-family="Trebuchet MS, sans-serif" font-size="20" font-weight="800">3</text>
+            </g>
+          </svg>
+          <span class="art-sticker art-sticker-one"><span aria-hidden="true">✨</span> You can do it!</span>
+          <span class="art-sticker art-sticker-two"><span aria-hidden="true">🌱</span> Little steps count</span>
+        </div>
+      </section>
+
+      <section class="journey-card" id="journey" aria-labelledby="journey-title">
+        <div class="journey-heading">
+          <span class="journey-icon" aria-hidden="true">🌱</span>
+          <div>
+            <span class="overline">YOUR LITTLE WIN</span>
+            <h2 id="journey-title">Today's star goal</h2>
+          </div>
+        </div>
+        <div class="goal-area">
+          <div class="goal-label-row">
+            <span class="goal-label" id="goal-message">Earn 5 stars to fill your learning jar!</span>
+            <span class="goal-number" id="goal-number">0 of 5 stars</span>
+          </div>
+          <div class="goal-track" role="progressbar" aria-label="Today's star goal" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="goal-progress">
+            <div class="goal-fill" id="goal-fill"></div>
+          </div>
+        </div>
+        <div class="journey-message">
+          <strong><span id="completed-count">0</span> adventures complete</strong>
+          Your progress stays right here on this device.
+        </div>
+      </section>
+
+      <section class="activities-section" id="activities" aria-labelledby="activities-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="activities-title">Choose your adventure</h2>
+            <p>Pick a game and let's make some math magic.</p>
+          </div>
+          <span class="section-mini-note"><span aria-hidden="true">⏱</span> Just a few minutes a day</span>
+        </div>
+        <div class="activity-grid">
+          <article class="activity-card" data-activity="counting" data-theme="mint">
+            <div class="activity-card-top">
+              <span class="activity-icon" aria-hidden="true">🌼</span>
+              <span class="activity-badge">5 QUICK QUESTIONS</span>
+            </div>
+            <h3>Counting Garden</h3>
+            <p>Count bright little things from 1 to 10. Ready, set, count!</p>
+            <div class="activity-card-bottom">
+              <span class="question-count">COUNT TO 10</span>
+              <button class="activity-play" type="button" data-start="counting" aria-label="Play Counting Garden"><span class="activity-play-label">Play now</span><span class="play-arrow" aria-hidden="true">↗</span></button>
+            </div>
+          </article>
+          <article class="activity-card" data-activity="addition" data-theme="peach">
+            <div class="activity-card-top">
+              <span class="activity-icon" aria-hidden="true">🍓</span>
+              <span class="activity-badge">5 QUICK QUESTIONS</span>
+            </div>
+            <h3>Addition Picnic</h3>
+            <p>Put two tiny groups together and find the total.</p>
+            <div class="activity-card-bottom">
+              <span class="question-count">ADD WITHIN 10</span>
+              <button class="activity-play" type="button" data-start="addition" aria-label="Play Addition Picnic"><span class="activity-play-label">Play now</span><span class="play-arrow" aria-hidden="true">↗</span></button>
+            </div>
+          </article>
+          <article class="activity-card" data-activity="shapes" data-theme="lilac">
+            <div class="activity-card-top">
+              <span class="activity-icon" aria-hidden="true">🔷</span>
+              <span class="activity-badge">5 QUICK QUESTIONS</span>
+            </div>
+            <h3>Shape Safari</h3>
+            <p>Meet circles, squares, triangles, and rectangles.</p>
+            <div class="activity-card-bottom">
+              <span class="question-count">SPOT THE SHAPE</span>
+              <button class="activity-play" type="button" data-start="shapes" aria-label="Play Shape Safari"><span class="activity-play-label">Play now</span><span class="play-arrow" aria-hidden="true">↗</span></button>
+            </div>
+          </article>
+          <article class="activity-card" data-activity="compare" data-theme="blue">
+            <div class="activity-card-top">
+              <span class="activity-icon" aria-hidden="true">🐞</span>
+              <span class="activity-badge">5 QUICK QUESTIONS</span>
+            </div>
+            <h3>Number Neighbors</h3>
+            <p>Compare two groups. Which has more, or are they the same?</p>
+            <div class="activity-card-bottom">
+              <span class="question-count">MORE OR THE SAME?</span>
+              <button class="activity-play" type="button" data-start="compare" aria-label="Play Number Neighbors"><span class="activity-play-label">Play now</span><span class="play-arrow" aria-hidden="true">↗</span></button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="tip-card" aria-label="Math tip">
+        <span class="tip-icon" aria-hidden="true">💡</span>
+        <div class="tip-copy">
+          <span class="overline">A TINY TIP FROM YOUR MATH BUDDY</span>
+          <p><strong>Adding is joining!</strong> Try counting on your fingers when you put two groups together.</p>
+        </div>
+        <span class="tip-sticker">YOU'VE GOT THIS!</span>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <span class="footer-brand">Number Nest <span aria-hidden="true">✦</span></span>
+      <span>Made for curious minds · Grade 1 Mathematics</span>
+    </footer>
+  </div>
+
+  <dialog class="lesson-dialog" id="lesson-dialog" aria-labelledby="lesson-title">
+    <div class="lesson-inner">
+      <div class="lesson-top">
+        <div class="lesson-title-wrap">
+          <span class="lesson-icon" id="lesson-icon" aria-hidden="true">🌼</span>
+          <div>
+            <p class="lesson-eyebrow">YOUR MATH ADVENTURE</p>
+            <h2 id="lesson-title">Counting Garden</h2>
+          </div>
+        </div>
+        <button class="close-button" id="close-lesson" type="button" aria-label="Close lesson">×</button>
+      </div>
+      <div class="lesson-progress-wrap">
+        <div class="lesson-progress-heading"><span id="question-count-label">Question 1 of 5</span><strong id="lesson-progress-label">Let's go!</strong></div>
+        <div class="lesson-track" role="progressbar" aria-label="Lesson progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="lesson-progress">
+          <div class="lesson-track-fill" id="lesson-progress-fill"></div>
+        </div>
+      </div>
+      <p class="question-prompt" id="question-prompt" tabindex="-1"></p>
+      <p class="question-hint" id="question-hint"></p>
+      <div class="question-visual" id="question-visual"></div>
+      <div class="answer-grid" id="answer-list" role="group" aria-label="Choose an answer"></div>
+      <div class="feedback is-hidden" id="feedback" role="status" aria-live="polite"></div>
+      <div class="lesson-actions">
+        <button class="button button-green is-hidden" id="next-question" type="button">Next question <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = 'number-nest-progress-v1';
+      const DAILY_GOAL = 5;
+      const ROUND_LENGTH = 5;
+      const today = () => {
+        const date = new Date();
+        return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+      };
+      const freshProgress = () => ({ totalStars: 0, dailyStars: 0, date: today(), completedActivities: [] });
+      const safeNumber = (value) => Number.isFinite(Number(value)) ? Math.max(0, Math.floor(Number(value))) : 0;
+
+      function loadProgress() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+          if (!saved || typeof saved !== 'object') return freshProgress();
+          const progress = {
+            totalStars: safeNumber(saved.totalStars),
+            dailyStars: saved.date === today() ? safeNumber(saved.dailyStars) : 0,
+            date: today(),
+            completedActivities: Array.isArray(saved.completedActivities)
+              ? [...new Set(saved.completedActivities.filter((id) => ['counting', 'addition', 'shapes', 'compare'].includes(id)))]
+              : []
+          };
+          return progress;
+        } catch (_) {
+          return freshProgress();
+        }
+      }
+
+      let progress = loadProgress();
+      let activeActivity = null;
+      let roundQuestions = [];
+      let questionIndex = 0;
+      let questionAnswered = false;
+      let lessonFinished = false;
+
+      const $ = (selector) => document.querySelector(selector);
+      const dialog = $('#lesson-dialog');
+      const lessonTitle = $('#lesson-title');
+      const lessonIcon = $('#lesson-icon');
+      const questionPrompt = $('#question-prompt');
+      const questionHint = $('#question-hint');
+      const questionVisual = $('#question-visual');
+      const answerList = $('#answer-list');
+      const feedback = $('#feedback');
+      const nextButton = $('#next-question');
+      const questionCountLabel = $('#question-count-label');
+      const lessonProgress = $('#lesson-progress');
+      const lessonProgressFill = $('#lesson-progress-fill');
+
+      const activityInfo = {
+        counting: { title: 'Counting Garden', icon: '🌼', eyebrow: 'COUNT TO 10' },
+        addition: { title: 'Addition Picnic', icon: '🍓', eyebrow: 'ADD WITHIN 10' },
+        shapes: { title: 'Shape Safari', icon: '🔷', eyebrow: 'SPOT THE SHAPE' },
+        compare: { title: 'Number Neighbors', icon: '🐞', eyebrow: 'MORE OR THE SAME?' }
+      };
+      const countingThings = [
+        { name: 'apples', singular: 'apple', emoji: '🍎' }, { name: 'stars', singular: 'star', emoji: '⭐' },
+        { name: 'bees', singular: 'bee', emoji: '🐝' }, { name: 'fish', singular: 'fish', emoji: '🐟' },
+        { name: 'flowers', singular: 'flower', emoji: '🌼' }, { name: 'frogs', singular: 'frog', emoji: '🐸' }
+      ];
+      const shapeNames = ['circle', 'square', 'triangle', 'rectangle'];
+      const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+      const pick = (items) => items[randomInt(0, items.length - 1)];
+      const shuffle = (items) => {
+        const result = [...items];
+        for (let i = result.length - 1; i > 0; i--) {
+          const j = randomInt(0, i);
+          [result[i], result[j]] = [result[j], result[i]];
+        }
+        return result;
+      };
+
+      function numberChoices(answer, max = 10) {
+        const choices = new Set([answer]);
+        const nearby = [answer - 2, answer - 1, answer + 1, answer + 2].filter((n) => n >= 0 && n <= max);
+        for (const value of shuffle(nearby)) {
+          if (choices.size >= 4) break;
+          choices.add(value);
+        }
+        while (choices.size < 4) choices.add(randomInt(0, max));
+        return shuffle([...choices]).map(String);
+      }
+
+      function shapeSvg(name, color = '#73C7A5') {
+        const shapes = {
+          circle: '<circle cx="50" cy="50" r="34" />',
+          square: '<rect x="18" y="18" width="64" height="64" rx="5" />',
+          triangle: '<path d="M50 14 87 82H13L50 14Z" />',
+          rectangle: '<rect x="10" y="25" width="80" height="50" rx="5" />'
+        };
+        return `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="${color}" stroke="#286D5B" stroke-width="3" stroke-linejoin="round">${shapes[name]}</g></svg>`;
+      }
+
+      function makeCountingQuestion() {
+        const thing = pick(countingThings);
+        const amount = randomInt(1, 10);
+        return {
+          prompt: `How many ${thing.name} can you count?`,
+          hint: 'Touch each one as you count. Take your time!',
+          visual: `<div class="count-board" role="img" aria-label="${amount} ${amount === 1 ? thing.singular : thing.name}">${Array.from({ length: amount }, () => `<span class="counter" aria-hidden="true">${thing.emoji}</span>`).join('')}</div>`,
+          choices: numberChoices(amount),
+          answer: String(amount),
+          kind: 'number'
+        };
+      }
+
+      function makeAdditionQuestion() {
+        const first = randomInt(1, 5);
+        const second = randomInt(1, Math.min(5, 10 - first));
+        const total = first + second;
+        const group = (count) => `<div class="addition-group" aria-hidden="true">${Array.from({ length: count }, () => '<span class="addition-dot">🍓</span>').join('')}</div>`;
+        return {
+          prompt: `What is ${first} + ${second}?`,
+          hint: 'Join the two groups, then count them all.',
+          visual: `<div class="addition-board" role="img" aria-label="${first} strawberries plus ${second} strawberries">${group(first)}<span class="math-symbol" aria-hidden="true">+</span>${group(second)}</div>`,
+          choices: numberChoices(total),
+          answer: String(total),
+          kind: 'number'
+        };
+      }
+
+      function makeShapeQuestion() {
+        const answer = pick(shapeNames);
+        return {
+          prompt: 'What shape do you see?',
+          hint: 'Look carefully at the sides and corners.',
+          visual: `<div class="shape-target" role="img" aria-label="A ${answer}">${shapeSvg(answer, '#FFD66E')}</div>`,
+          choices: shuffle(shapeNames),
+          answer,
+          kind: 'shape'
+        };
+      }
+
+      function makeCompareQuestion() {
+        const same = Math.random() < .25;
+        const first = randomInt(1, 9);
+        let second = same ? first : randomInt(1, 9);
+        while (!same && second === first) second = randomInt(1, 9);
+        const answer = first === second ? 'same' : first > second ? 'A' : 'B';
+        const group = (label, amount) => `<div class="compare-group" role="img" aria-label="Group ${label}, ${amount} ladybugs"><span class="compare-group-label">GROUP ${label}</span>${Array.from({ length: amount }, () => '<span aria-hidden="true">🐞</span>').join('')}</div>`;
+        return {
+          prompt: first === second ? 'Do both groups have the same number of ladybugs?' : 'Which group has more ladybugs?',
+          hint: first === second ? 'Count both groups. Do they match?' : 'You can count both groups to check.',
+          visual: `<div class="compare-board">${group('A', first)}<span class="compare-versus" aria-hidden="true">VS</span>${group('B', second)}</div>`,
+          choices: ['A', 'B', 'same'],
+          answer,
+          kind: 'labels',
+          labels: { A: 'Group A', B: 'Group B', same: 'Same amount' }
+        };
+      }
+
+      const questionMakers = {
+        counting: makeCountingQuestion,
+        addition: makeAdditionQuestion,
+        shapes: makeShapeQuestion,
+        compare: makeCompareQuestion
+      };
+
+      function saveProgress() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch (_) { /* Progress still works for this visit if storage is unavailable. */ }
+      }
+
+      function updateProgressDisplay() {
+        const earned = Math.min(progress.dailyStars, DAILY_GOAL);
+        $('#total-stars').textContent = progress.totalStars;
+        $('#goal-number').textContent = `${earned} of ${DAILY_GOAL} stars`;
+        $('#goal-fill').style.width = `${(earned / DAILY_GOAL) * 100}%`;
+        $('#goal-progress').setAttribute('aria-valuenow', String(earned));
+        $('#goal-message').textContent = earned >= DAILY_GOAL
+          ? 'Goal reached! You are a math star!'
+          : 'Earn 5 stars to fill your learning jar!';
+        $('#completed-count').textContent = progress.completedActivities.length;
+        document.querySelectorAll('.activity-card').forEach((card) => {
+          const done = progress.completedActivities.includes(card.dataset.activity);
+          const badge = card.querySelector('.activity-badge');
+          const label = card.querySelector('.activity-play-label');
+          badge.textContent = done ? 'ADVENTURE COMPLETE' : '5 QUICK QUESTIONS';
+          badge.classList.toggle('is-done', done);
+          label.textContent = done ? 'Play again' : 'Play now';
+        });
+      }
+
+      function openLesson(id) {
+        activeActivity = id;
+        roundQuestions = Array.from({ length: ROUND_LENGTH }, () => questionMakers[id]());
+        questionIndex = 0;
+        questionAnswered = false;
+        lessonFinished = false;
+        lessonTitle.textContent = activityInfo[id].title;
+        lessonIcon.textContent = activityInfo[id].icon;
+        questionCountLabel.textContent = `Question 1 of ${ROUND_LENGTH}`;
+        $('#lesson-progress-label').textContent = activityInfo[id].eyebrow;
+        answerList.hidden = false;
+        nextButton.classList.add('is-hidden');
+        if (!dialog.open) dialog.showModal();
+        renderQuestion();
+        questionPrompt.focus({ preventScroll: true });
+      }
+
+      function renderQuestion() {
+        const question = roundQuestions[questionIndex];
+        questionAnswered = false;
+        questionCountLabel.textContent = `Question ${questionIndex + 1} of ${ROUND_LENGTH}`;
+        $('#lesson-progress-label').textContent = activityInfo[activeActivity].eyebrow;
+        lessonProgressFill.style.width = `${(questionIndex / ROUND_LENGTH) * 100}%`;
+        lessonProgress.setAttribute('aria-valuenow', String(questionIndex));
+        questionPrompt.textContent = question.prompt;
+        questionHint.textContent = question.hint;
+        questionVisual.innerHTML = question.visual;
+        feedback.className = 'feedback is-hidden';
+        feedback.textContent = '';
+        nextButton.classList.add('is-hidden');
+        nextButton.innerHTML = 'Next question <span aria-hidden="true">→</span>';
+        lessonFinished = false;
+        answerList.hidden = false;
+        answerList.classList.toggle('is-labels', question.kind === 'labels');
+        answerList.innerHTML = question.choices.map((value) => {
+          const label = question.labels ? question.labels[value] : value;
+          const content = question.kind === 'shape'
+            ? `${shapeSvg(value, '#B9A7F5')}<span>${value}</span>`
+            : label;
+          return `<button type="button" class="answer-option${question.kind === 'shape' ? ' is-shape' : ''}" data-answer="${value}" aria-label="${label}">${content}</button>`;
+        }).join('');
+      }
+
+      function showWrongAnswer(button) {
+        button.classList.add('is-wrong');
+        window.setTimeout(() => button.classList.remove('is-wrong'), 550);
+        feedback.className = 'feedback is-wrong';
+        feedback.textContent = 'Good try! Have another look and give it one more go.';
+      }
+
+      function answerQuestion(button) {
+        if (questionAnswered || !button) return;
+        const question = roundQuestions[questionIndex];
+        const chosen = button.dataset.answer;
+        if (chosen !== question.answer) {
+          showWrongAnswer(button);
+          return;
+        }
+        questionAnswered = true;
+        progress.totalStars += 1;
+        progress.dailyStars = progress.date === today() ? progress.dailyStars + 1 : 1;
+        progress.date = today();
+        saveProgress();
+        updateProgressDisplay();
+        answerList.querySelectorAll('.answer-option').forEach((option) => { option.disabled = true; });
+        button.classList.remove('is-wrong');
+        button.classList.add('is-correct');
+        feedback.className = 'feedback';
+        feedback.innerHTML = '<span class="feedback-icon" aria-hidden="true">🌟</span><span><strong>Super thinking!</strong><br>You earned 1 star for your jar.</span>';
+        const answeredCount = questionIndex + 1;
+        lessonProgressFill.style.width = `${(answeredCount / ROUND_LENGTH) * 100}%`;
+        lessonProgress.setAttribute('aria-valuenow', String(answeredCount));
+        $('#lesson-progress-label').textContent = `${answeredCount} of ${ROUND_LENGTH} done`;
+        nextButton.innerHTML = answeredCount === ROUND_LENGTH
+          ? 'Finish adventure <span aria-hidden="true">→</span>'
+          : 'Next question <span aria-hidden="true">→</span>';
+        nextButton.classList.remove('is-hidden');
+        nextButton.focus({ preventScroll: true });
+      }
+
+      function finishLesson() {
+        if (!progress.completedActivities.includes(activeActivity)) {
+          progress.completedActivities.push(activeActivity);
+          saveProgress();
+        }
+        updateProgressDisplay();
+        lessonFinished = true;
+        questionPrompt.textContent = 'You did it, math explorer!';
+        questionHint.textContent = `You finished ${activityInfo[activeActivity].title}. Your brain just got stronger!`;
+        questionVisual.innerHTML = '<div class="completion-art" role="img" aria-label="A shiny trophy for finishing the adventure"><span class="trophy-emoji" aria-hidden="true">🏆</span></div>';
+        answerList.hidden = true;
+        feedback.className = 'feedback';
+        feedback.innerHTML = '<span class="feedback-icon" aria-hidden="true">🎉</span><span><strong>Five questions finished!</strong><br>Pick another adventure whenever you are ready.</span>';
+        questionCountLabel.textContent = 'Adventure complete!';
+        $('#lesson-progress-label').textContent = 'Amazing work!';
+        lessonProgressFill.style.width = '100%';
+        lessonProgress.setAttribute('aria-valuenow', String(ROUND_LENGTH));
+        nextButton.innerHTML = 'Back to my adventures <span aria-hidden="true">→</span>';
+        nextButton.classList.remove('is-hidden');
+        questionPrompt.focus({ preventScroll: true });
+      }
+
+      document.querySelectorAll('[data-start]').forEach((button) => {
+        button.addEventListener('click', () => openLesson(button.dataset.start));
+      });
+      answerList.addEventListener('click', (event) => {
+        const button = event.target.closest('.answer-option');
+        if (button && answerList.contains(button)) answerQuestion(button);
+      });
+      nextButton.addEventListener('click', () => {
+        if (lessonFinished) {
+          dialog.close();
+          return;
+        }
+        if (questionIndex >= ROUND_LENGTH - 1) {
+          finishLesson();
+          return;
+        }
+        questionIndex += 1;
+        renderQuestion();
+        questionPrompt.focus?.({ preventScroll: true });
+      });
+      $('#close-lesson').addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+
+      updateProgressDisplay();
+    })();
+  </script>
+</body>
+</html>
